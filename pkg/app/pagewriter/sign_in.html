@@ -8,83 +8,93 @@
     <link rel="stylesheet" href="{{.ProxyPrefix}}/static/css/bulma.min.css">
 
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
       body {
-        height: 100vh;
-      }
-      .sign-in-box {
-        max-width: 400px;
-        margin: 1.25rem auto;
-      }
-      .logo-box {
-        margin: 1.5rem 3rem;
-      }
-      .alert {
-        padding: 5px;
-        background-color: #f44336; /* Red */
-        color: white;
-        margin-bottom: 5px;
-        border-radius: 5px
-      }
-      /* The close button */
-      .closebtn {
-        margin-left: 10px;
-        color: white;
-        font-weight: bold;
-        float: right;
-        font-size: 22px;
-        line-height: 20px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      /* When moving the mouse over the close button */
-      .closebtn:hover {
-        color: black;
-      }
-      footer a {
-        text-decoration: underline;
-      }
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('{{.ProxyPrefix}}/static/img/科技射线线条.gif') no-repeat center center fixed;
+            /* background-color: #F5F5F5; */
+            background-size: cover;
+        }
+        .login-container {
+            background: #FFFFFF;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .login-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .login-container img {
+            width: 150px;
+            margin-bottom: 1.5rem;
+        }
+        .login-container h1 {
+            font-size: 28px;
+            margin-bottom: 1.5rem;
+            color: #333333;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #F5F5F5;
+            color: #333333;
+        }
+        .login-container input::placeholder {
+            color: #999999;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+        .login-container .links {
+            margin-top: 1rem;
+        }
+        .login-container .links a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .login-container .links a:hover {
+            text-decoration: underline;
+        }
     </style>
   </head>
-  <body class="has-background-light">
-  <section class="section has-background-light">
-    <div class="box block sign-in-box has-text-centered">
-      {{ if .LogoData }}
-      <div class="block logo-box">
-        {{.LogoData}}
-      </div>
-      {{ end }}
-
+  <body>
+    <div class="login-container">
+      <img src="{{.ProxyPrefix}}/static/img/jiamianblack_logo.png" alt="Logo">
+      <!-- <h1>JiamianTech AI Chat</h1> -->
+  
       <form method="GET" action="{{.ProxyPrefix}}/start">
         <input type="hidden" name="rd" value="{{.Redirect}}">
-          {{ if .SignInMessage }}
-          <p class="block">{{.SignInMessage}}</p>
-          {{ end}}
-          <button type="submit" class="button block is-primary">Sign in with {{.ProviderName}}</button>
+        {{ if .SignInMessage }}
+        <p class="block">{{.SignInMessage}}</p>
+        {{ end}}
+        <button type="submit" class="button block is-primary">Sign in with {{.ProviderName}}</button>
       </form>
-
-      {{ if .CustomLogin }}
-      <hr>
-
-      <form method="POST" action="{{.ProxyPrefix}}/sign_in" class="block">
-        <input type="hidden" name="rd" value="{{.Redirect}}">
-
-        <div class="field">
-          <label class="label" for="username">Username</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="e.g. userx@example.com"  name="username" id="username">
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label" for="password">Password</label>
-          <div class="control">
-            <input class="input" type="password" placeholder="********" name="password" id="password">
-          </div>
-        </div>
-        <button class="button is-primary">Sign in</button>
-      </form>
-      {{ end }}
-
+  
       {{ if eq .StatusCode 400 401 }}
       <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -95,38 +105,24 @@
         {{ end }}
       </div> 
       {{ end }}
-
     </div>
-  </section>
-
-  <script>
-    if (window.location.hash) {
-      (function() {
-        var inputs = document.getElementsByName('rd');
-        for (var i = 0; i < inputs.length; i++) {
-          // Add hash, but make sure it is only added once
-          var idx = inputs[i].value.indexOf('#');
-          if (idx >= 0) {
-            // Remove existing hash from URL
-            inputs[i].value = inputs[i].value.substr(0, idx);
+  
+    <script>
+      if (window.location.hash) {
+        (function() {
+          var inputs = document.getElementsByName('rd');
+          for (var i = 0; i < inputs.length; i++) {
+            // Add hash, but make sure it is only added once
+            var idx = inputs[i].value.indexOf('#');
+            if (idx >= 0) {
+              // Remove existing hash from URL
+              inputs[i].value = inputs[i].value.substr(0, idx);
+            }
+            inputs[i].value += window.location.hash;
           }
-          inputs[i].value += window.location.hash;
-        }
-      })();
-    }
-  </script>
-
-  <footer class="footer has-text-grey has-background-light is-size-7">
-    <div class="content has-text-centered">
-    	{{ if eq .Footer "-" }}
-    	{{ else if eq .Footer ""}}
-    	<p>Secured with <a href="https://github.com/oauth2-proxy/oauth2-proxy#oauth2_proxy" class="has-text-grey">OAuth2 Proxy</a> version {{.Version}}</p>
-    	{{ else }}
-    	<p>{{.Footer}}</p>
-    	{{ end }}
-    </div>
-	</footer>
-
+        })();
+      }
+    </script>
   </body>
 </html>
 {{end}}
